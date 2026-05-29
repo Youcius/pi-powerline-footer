@@ -1,20 +1,20 @@
 {
   "colors": {
-    "model": "#00ffff",
-    "shellMode": "#ff00ff",
-    "path": "#39ff14",
-    "gitDirty": "#ff6ec7",
-    "gitClean": "#39ff14",
-    "thinking": "#ff00ff",
-    "thinkingMinimal": "#ff6ec7",
-    "thinkingLow": "#00ffff",
-    "thinkingMedium": "#ff00ff",
-    "context": "#39ff14",
-    "contextWarn": "#ffff00",
-    "contextError": "#ff0040",
-    "cost": "#39ff14",
-    "tokens": "#00ffff",
-    "separator": "#1a1a2e",
-    "border": "#00ffff"
+    "model": "#ff3cac",
+    "shellMode": "#00ff87",
+    "path": "#00d4ff",
+    "gitDirty": "#ff9f1c",
+    "gitClean": "#00ff87",
+    "thinking": "#ff6b6b",
+    "thinkingMinimal": "#a855f7",
+    "thinkingLow": "#00d4ff",
+    "thinkingMedium": "#ff9f1c",
+    "context": "#6c5ce7",
+    "contextWarn": "#fdcb6e",
+    "contextError": "#ff3366",
+    "cost": "#fdcb6e",
+    "tokens": "#00ff87",
+    "separator": "#a855f7",
+    "border": "#dfe6e9"
   }
 }
