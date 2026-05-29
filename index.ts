@@ -2616,7 +2616,9 @@ export default function powerlineFooter(pi: ExtensionAPI) {
           return;
         }
 
-        if (!autocompleteFixed && !getInstalledAutocompleteProvider()) {
+        const isPasteData = data.includes("\x1b[200~") || Reflect.get(editor, "isInPaste") === true;
+
+        if (!autocompleteFixed && !getInstalledAutocompleteProvider() && !isPasteData) {
           autocompleteFixed = true;
           snapshotPromptHistory(editor);
           ctx.ui.setEditorComponent(editorFactory);

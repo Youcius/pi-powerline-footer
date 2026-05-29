@@ -288,6 +288,18 @@ function sanitizeOverlayBaseLine(line: string, width: number): string {
   return sanitizeLine(stripOscSequences(line), width);
 }
 
+function renderScrollbarChar(row: number, totalRows: number, scrollOffset: number, maxScrollOffset: number): string {
+  if (totalRows <= 1 || maxScrollOffset <= 0) return " ";
+  const thumbSize = Math.max(1, Math.round(totalRows * totalRows / (maxScrollOffset + totalRows)));
+  const thumbPos = maxScrollOffset > 0
+    ? Math.round((totalRows - thumbSize) * (maxScrollOffset - scrollOffset) / maxScrollOffset)
+    : totalRows - thumbSize;
+  if (row >= thumbPos && row < thumbPos + thumbSize) {
+    return "\x1b[38;5;250m▓\x1b[0m";
+  }
+  return "\x1b[38;5;238m░\x1b[0m";
+}
+
 function normalizeOverlayCompositionLine(line: string): string {
   return line.includes("\t") ? line.replace(/\t/g, "   ") : line;
 }
@@ -586,7 +598,9 @@ export class TerminalSplitCompositor {
     try {
       const start = this.refreshRootWindow(width);
       return this.visibleRootLines.map((line, index) => {
-        return this.renderSelectionHighlight(line, start + index, "root");
+        const highlighted = this.renderSelectionHighlight(line, start + index, "root");
+        const sbChar = renderScrollbarChar(index, this.visibleScrollableRows, this.scrollOffset, this.maxScrollOffset);
+        return sanitizeLine(highlighted, Math.max(1, width - 1)) + sbChar;
       });
     } finally {
       this.renderingScrollableRoot = false;
@@ -892,7 +906,8 @@ export class TerminalSplitCompositor {
     for (let row = 0; row < scrollableRows; row++) {
       if (row > 0) buffer += "\r\n";
       buffer += clearLine();
-      buffer += sanitizeLine(this.renderSelectionHighlight(this.visibleRootLines[row] ?? "", start + row, "root"), width);
+      buffer += sanitizeLine(this.renderSelectionHighlight(this.visibleRootLines[row] ?? "", start + row, "root"), Math.max(1, width - 1));
+      buffer += renderScrollbarChar(row, scrollableRows, this.scrollOffset, this.maxScrollOffset);
     }
 
     buffer += buildFixedClusterPaint(this.decorateCluster(cluster), rawRows, width, this.getShowHardwareCursor());
